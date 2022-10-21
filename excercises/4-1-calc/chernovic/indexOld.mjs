@@ -8,7 +8,7 @@ switch(operation) {
         console.log(`Ваша операция - ${o}`)
 
         try {
-            const { toAdd } = await import("./add.mjs");
+            const { toAdd } = await import("../add.mjs");
             let result = toAdd(a, b);
             console.log(result);
         } catch(e) {
@@ -18,7 +18,7 @@ switch(operation) {
     case ('-'):
         console.log(`Ваша операция - 'вычитание'`)
         try {
-            const { toSubstract } = await import("./substraction.mjs");
+            const { toSubstract } = await import("../substraction.mjs");
             let result = toSubstract(a, b);
             console.log(result);
         } catch(e) {
@@ -29,7 +29,7 @@ switch(operation) {
         console.log(`Ваша операция - 'умножение'`)
 
         try {
-            const { toMultiply } = await import("./multiply.mjs");
+            const { toMultiply } = await import("../multiply.mjs");
             let result = toMultiply(a, b);
             console.log(result);
         } catch(e) {
@@ -41,7 +41,7 @@ switch(operation) {
         console.log(`Ваша операция - 'деление'`)
 
         try {
-            const { toDivide } = await import("./division.mjs");
+            const { toDivide } = await import("../division.mjs");
             let result = toDivide(a, b);
             console.log(result);
         } catch(e) {
