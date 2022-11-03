@@ -2,11 +2,16 @@ const eventEmmiter = require('events');
 
 const myEmmiter = new eventEmmiter();
 
+const oper_array = ['+', '-', '*', '/']
+
 let a = parseInt(process.argv[2]);
 let b = parseInt(process.argv[3]);
-let operation = process.argv[4]; 
-//console.log(a, b, operation)
+let operation = process.argv[4];
 
+if (!oper_array.includes(operation)) {
+    console.log('   Неизвестная операция, завершение работы')
+    process.exit();
+}
 myEmmiter.on("+", (a, b) => {
     myEmmiter.emit('result', a + b)
 });
