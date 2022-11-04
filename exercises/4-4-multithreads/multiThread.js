@@ -13,23 +13,29 @@ const performanceObserver = new perf_hooks.PerformanceObserver((items, observer)
 
 performanceObserver.observe({entryTypes: ['function']});
 
-
-
-function computeWithoutThread(a=0, b=300_000) {
-    let result = 0;
-    for (let i = a; i <= b; i++) {
-        if (i%3==0) {
-            result+=1
-        }
+const generateArray = (a=0, b=300_000) => {
+    let arr = [];
+    for (let i=a; i<=b; i++) {
+        arr.push(i)
+        
     };
-    //console.log(`computeWithoutThreads: ${result}`)
+    return arr
 };
-computeWithoutThread();
 
-const compute = (a, b) => {
+function computeWithoutThread(array) {
+    let arr = array.map((x) => 
+        (Math.random() > 0.5 ? x*2 : x/3)
+    );
+    let sum = arr.reduce((a, b) => a+b);
+    console.log(arr.length, sum);
+};
+computeWithoutThread(generateArray());
+
+
+const compute = (array) => {
     return new Promise((resolve, reject) => {
         const worker = new Worker('./worker.js', {
-            workerData: [a, b] 
+            workerData: array 
         });
 
         worker.on('message', (msg) => {
@@ -40,20 +46,22 @@ const compute = (a, b) => {
             reject(err);
         })
     })
-}
-
+};
 
  
 async function computeInThreads() {
     try{
-        const result = await Promise.all([
-            compute(0, 300_000/4),
-            compute(300_000/4, 2*300_000/4),
-            compute(2*300_000/4, 3*300_000/4),
-            compute(3*300_000/4, 300_001),
+        const getFromThreads = await Promise.all([
+            compute(generateArray(0, 300_000/4-1)),
+            compute(generateArray(300_000/4, 2*300_000/4-1)),
+            compute(generateArray(2*300_000/4, 3*300_000/4-1)),
+            compute(generateArray(3*300_000/4, 300_000))
 
-        ])
-        //console.log(`computeInThreads: ${result.reduce((a, b) => a+b)}`);
+        ]);
+        
+        let result = getFromThreads.reduce((a, b) => a.concat(b));
+        let sum = result.reduce((a, b) => a+b);
+        console.log(result.length, sum);
 
     } catch(e) {
         console.error(e.message);

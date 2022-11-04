@@ -12,6 +12,7 @@ if (!oper_array.includes(operation)) {
     console.log('   Неизвестная операция, завершение работы')
     process.exit();
 }
+
 myEmmiter.on("+", (a, b) => {
     myEmmiter.emit('result', a + b)
 });

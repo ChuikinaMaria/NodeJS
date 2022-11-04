@@ -11,13 +11,14 @@ const performanceObserver = new perf_hooks.PerformanceObserver((items, observer)
 performanceObserver.observe({entryTypes: ['function']});
 
 function compute() {
-
-    let result = 0;
-    for (let i = 0; i <= 300_000; i++) {
-        if (i%3==0) {
-            result+=1
-        }
+    let arr = [];
+    for (let i =0; i<=300_000; i++) {
+        arr.push(i);
     };
-    console.log(result)
+    let result = arr.map((x) => 
+        (Math.random() > 0.5 ? x*2 : x/3)
+    );
+
+    console.log(result.length)
 };
 compute();
